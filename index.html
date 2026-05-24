@@ -378,7 +378,7 @@ section{position:relative}
 const PWD = "design2024";
 // ══════════════════════════════════════════
 
-const SK = "portfolio_v2";
+
 
 const DEF = {
   navLogo:"ELENA MOREAU", nlHome:"Accueil", nlAbout:"Profil", nlSrv:"Services", nlWork:"Travaux", nlComments:"Commentaires", nlContact:"Contact",
@@ -429,8 +429,15 @@ let D = JSON.parse(JSON.stringify(DEF));
 let editMode = false;
 
 // ── LOAD / SAVE ────────────────────────────
-function load(){
-  try{ const r=localStorage.getItem(SK); if(r) D=JSON.parse(r); }catch(e){}
+async function load(){
+  try {
+    const snap = await getDoc(doc(db, "portfolio", "main"));
+    if (snap.exists()) {
+      D = snap.data();
+    }
+  } catch (e) {
+    console.log("Erreur load Firebase:", e);
+  }
 }
 function saveAll(){
   // Sync text fields from DOM
@@ -703,6 +710,21 @@ document.addEventListener("DOMContentLoaded",()=>{
   });
   document.getElementById("pwd-modal").addEventListener("click",function(e){if(e.target===this)closeModal()});
 });
+<script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyD9iEcyCzTxiqJPLY-qgo1LYvcgDZ-K7kc",
+    authDomain: "portfolio-22e4b.firebaseapp.com",
+    projectId: "portfolio-22e4b",
+    storageBucket: "portfolio-22e4b.firebasestorage.app",
+    messagingSenderId: "214997551796",
+    appId: "1:214997551796:web:b8f93c9a3ee0c44594a5e1",
+    measurementId: "G-YRF0Q8JL46"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 </script>
 </body>
 </html>
